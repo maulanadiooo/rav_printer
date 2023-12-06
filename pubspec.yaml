@@ -1,0 +1,31 @@
+name: rav_printer
+description: Ravintola for Printer TSPL commands.
+version: 0.0.1
+publish_to: none
+
+environment:
+  sdk: '>=3.1.5 <4.0.0'
+  flutter: ">=1.20.0"
+dependencies:
+  bluetooth_thermal_printer:
+    path: bt_thermal
+  esc_pos_utils_plus: 
+    path: esc_pos_utils_plus
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+
+  # The "flutter_lints" package below contains a set of recommended lints to
+  # encourage good coding practices. The lint set provided by the package is
+  # activated in the `analysis_options.yaml` file located at the root of your
+  # package. See that file for information about deactivating specific lint
+  # rules and activating additional ones.
+  flutter_lints: ^2.0.0
+  flutter_test:
+    sdk: flutter
+
+# For information on the generic Dart part of this file, see the
+# following page: https://dart.dev/tools/pub/pubspec
+# The following section is specific to Flutter packages.
+flutter: null
