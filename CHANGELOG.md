@@ -1,3 +1,7 @@
+## [0.0.4]
+
+- align right enable for label
+
 ## [0.0.3]
 
 - add bluetooth_thermal+printer_plus
