@@ -180,6 +180,8 @@ COUNTRY 061
               paddingLeft: paddingleft,
               paddingTop: paddingtop,
               feed: feed,
+              fontHeight: style.fontHeight,
+              fontWidth: style.fontWidth,
             );
           } else if (style.align == RavAlign.center) {
             paddingtop = _textCenter(
@@ -190,6 +192,8 @@ COUNTRY 061
               paddingTop: paddingtop,
               feed: feed,
               widthLabel: widthLabel,
+              fontHeight: style.fontHeight,
+              fontWidth: style.fontWidth,
             );
           } else {
             paddingtop = _rightText(
@@ -200,6 +204,8 @@ COUNTRY 061
               paddingLeft: paddingleft,
               paddingTop: paddingtop,
               feed: feed,
+              fontHeight: style.fontHeight,
+              fontWidth: style.fontWidth,
             );
           }
           paddingtop += feed;
@@ -270,6 +276,8 @@ COUNTRY 061
               paddingLeft: 0,
               paddingTop: paddingtop,
               feed: feed,
+              fontHeight: style.fontHeight,
+              fontWidth: style.fontWidth,
             );
           } else if (style.align == RavAlign.center) {
             paddingtop = _textCenter(
@@ -280,6 +288,8 @@ COUNTRY 061
               paddingTop: paddingtop,
               feed: feed,
               widthLabel: widthLabel,
+              fontHeight: style.fontHeight,
+              fontWidth: style.fontWidth,
             );
           } else {
             paddingtop = _rightText(
@@ -290,6 +300,8 @@ COUNTRY 061
               paddingLeft: 0,
               paddingTop: paddingtop,
               feed: feed,
+              fontHeight: style.fontHeight,
+              fontWidth: style.fontWidth,
             );
           }
           paddingtop += feed;
@@ -305,7 +317,7 @@ COUNTRY 061
       required String text,
       required int paddingLeft,
       required int paddingTop,
-      required int feed}) {
+      required int feed, int? fontHeight, int? fontWidth,}) {
     int maxChar = maxLength - spaceLeft;
     int charZoom;
     if (fontZoom <= 1) {
@@ -320,7 +332,7 @@ COUNTRY 061
     }
     if (text.length < maxChar) {
       bytes +=
-          '''TEXT $paddingLeft, $paddingTop, "1", 0, $charZoom, $charZoom, "$text"\n''';
+          '''TEXT $paddingLeft, $paddingTop, "1", 0, ${fontHeight ?? charZoom}, ${fontWidth ?? charZoom}, "$text"\n''';
       return paddingTop;
     } else {
       List<String> splitSpace = text.split(" ");
@@ -347,7 +359,7 @@ COUNTRY 061
 
       for (int i = 0; i < resultLines.length; i++) {
         bytes +=
-            '''TEXT $paddingLeft, $paddingTop, "1", 0, $charZoom, $charZoom, "$space${resultLines[i]}"\n''';
+            '''TEXT $paddingLeft, $paddingTop, "1", 0, ${fontHeight ?? charZoom}, ${fontWidth ?? charZoom}, "$space${resultLines[i]}"\n''';
         paddingTop += feed;
       }
       return paddingTop;
@@ -361,7 +373,7 @@ COUNTRY 061
       required String text,
       required int paddingLeft,
       required int paddingTop,
-      required int feed}) {
+      required int feed, int? fontHeight, int? fontWidth,}) {
     int maxChar = maxLength - spaceLeft;
     int charZoom;
     if (fontZoom <= 1) {
@@ -382,7 +394,7 @@ COUNTRY 061
       int spaceKiri = maxChar - text.length;
       int dotToSkip = (spaceKiri * (dotsPerChar * 2));
       bytes +=
-          '''TEXT $dotToSkip, $paddingTop, "1", 0, $charZoom, $charZoom, "$text"\n''';
+          '''TEXT $dotToSkip, $paddingTop, "1", 0, ${fontHeight ?? charZoom}, ${fontWidth ?? charZoom}, "$text"\n''';
       return paddingTop;
     } else {
       List<String> splitSpace = text.split(" ");
@@ -409,10 +421,13 @@ COUNTRY 061
 
       for (int i = 0; i < resultLines.length; i++) {
         int dotsPerChar = 6;
+        if (fontZoom > 1) {
+          dotsPerChar = 12;
+        }
         int spaceKiri = maxChar - resultLines[i].length;
         int dotToSkip = (spaceKiri * (dotsPerChar * 2));
         bytes +=
-            '''TEXT $dotToSkip, $paddingTop, "1", 0, $charZoom, $charZoom, "$space${resultLines[i]}"\n''';
+            '''TEXT $dotToSkip, $paddingTop, "1", 0,  ${fontHeight ?? charZoom}, ${fontWidth ?? charZoom}, "$space${resultLines[i]}"\n''';
         paddingTop += feed;
       }
       return paddingTop;
@@ -426,7 +441,7 @@ COUNTRY 061
       required int paddingLeft,
       required int paddingTop,
       required int feed,
-      required LabelWidth widthLabel}) {
+      required LabelWidth widthLabel, int? fontHeight, int? fontWidth,}) {
     int maxChar = maxLength;
 
     if (text.length < maxChar) {
@@ -453,7 +468,7 @@ COUNTRY 061
       //   finalText += " ";
       // }
       bytes +=
-          '''TEXT $dotToSkip, $paddingTop, "1", 0, $fontZoom, $fontZoom, "$finalText"\n''';
+          '''TEXT $dotToSkip, $paddingTop, "1", 0, ${fontHeight ?? fontZoom}, ${fontWidth ?? fontZoom}, "$finalText"\n''';
       return paddingTop;
     } else {
       // cari hasil baginya dulu berapa
@@ -468,7 +483,7 @@ COUNTRY 061
         int awalKarakter = maxChar * i;
         String singleLineText = text.substring(awalKarakter, akhirKarakter);
         bytes +=
-            '''TEXT $paddingLeft, $paddingTop, "1", 0, $fontZoom, $fontZoom, "$singleLineText"\n''';
+            '''TEXT $paddingLeft, $paddingTop, "1", 0, ${fontHeight ?? fontZoom}, ${fontWidth ?? fontZoom}, "$singleLineText"\n''';
         paddingTop += feed;
       }
       // nah ambil sisa karakternya, ini baru yang di center kan
@@ -486,7 +501,7 @@ COUNTRY 061
           finalText += " ";
         }
         bytes +=
-            '''TEXT $paddingLeft, $paddingTop, "1", 0, $fontZoom, $fontZoom, "$finalText"\n''';
+            '''TEXT $paddingLeft, $paddingTop, "1", 0, ${fontHeight ?? fontZoom}, ${fontWidth ?? fontZoom}, "$finalText"\n''';
         paddingTop += feed;
       }
 
@@ -563,6 +578,8 @@ COUNTRY 061
 
 class RavTextStyle {
   int fontZoom;
+  int? fontWidth;
+  int? fontHeight;
   String text;
   RavAlign align;
   bool isQrCode;
@@ -572,8 +589,9 @@ class RavTextStyle {
 
   /// Jika fontzoom lebih besar daripada 1, maka itu ukuran text 2x lebih besar, default 1
   ///
-  /// align, 0=left, 1=center, NOTE: [2=hanya untuk print receipt align right]
+  /// align, user RavAlign
   /// printLine = false, true jika ingin membuat garus putus2, dan text dikosongkan saja
+  /// fontheight dan fontwidth berguna untuk custom ukuran, berikan fontzoom 2 jika fontwidht diset 2 untuk hasil yg optimal
   RavTextStyle({
     this.fontZoom = 1,
     this.align = RavAlign.left,
@@ -581,6 +599,8 @@ class RavTextStyle {
     this.isBarCode = false,
     this.printLine = false,
     this.lineEnter,
+    this.fontHeight,
+    this.fontWidth,
     required this.text,
   });
 }
