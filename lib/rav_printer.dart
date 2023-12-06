@@ -132,61 +132,78 @@ COUNTRY 061
     for (RavTextStyle style in texts) {
       int feed = lineFeed;
       int maxLength = maxCharLength;
-      if (style.isQrCode) {
-        // if (style.align == 1) {
-        //   bytes += '''QRCODE 75,$paddingtop,H,4,A,0,"${style.text}"\n''';
-        // } else {
-        //   bytes +=
-        //       '''QRCODE $paddingleft,$paddingtop,H,4,A,0,"${style.text}"\n''';
-        // }
-        bytes +=
-            '''QRCODE $paddingleft,$paddingtop,H,5,A,0,"${style.text}"\n''';
-      } else if (style.isBarCode) {
-        int heighBarCode = 100;
-        if (style.align == 1) {
-          int dotsPerChar = 6;
-          int space = maxLength - style.text.length; // 6
-          int spaceKiri = (space / 2).ceil();
-          int dotToSkip = (spaceKiri * (dotsPerChar * 2)) + paddingleft;
-          bytes +=
-              '''BARCODE $dotToSkip, $paddingtop, "128",$heighBarCode,1,0,1,1, "${style.text}""\n''';
-        } else {
-          bytes +=
-              '''BARCODE $paddingleft, $paddingtop, "128",$heighBarCode,1,0,1,1, "${style.text}""\n''';
+      if (style.lineEnter != null) {
+        for (int i = 0; i < style.lineEnter!; i++) {
+          bytes += '''TEXT 0, $paddingtop, "1", 0, 1, 1, ""\n''';
+          paddingtop += feed;
         }
-
-        paddingtop += heighBarCode + 50;
-      } else if (style.printLine) {
-        // bytes += '''BAR 0,$paddingtop,400,4\n''';
-        bytes += '''BLINE 4 mm\n''';
-        paddingtop += 20;
       } else {
-        if (style.fontZoom > 1) {
-          feed = 50;
-          maxLength = maxCharLength ~/ 2; // toInt()
+        if (style.isQrCode) {
+          // if (style.align == 1) {
+          //   bytes += '''QRCODE 75,$paddingtop,H,4,A,0,"${style.text}"\n''';
+          // } else {
+          //   bytes +=
+          //       '''QRCODE $paddingleft,$paddingtop,H,4,A,0,"${style.text}"\n''';
+          // }
+          bytes +=
+              '''QRCODE $paddingleft,$paddingtop,H,5,A,0,"${style.text}"\n''';
+        } else if (style.isBarCode) {
+          int heighBarCode = 100;
+          if (style.align == RavAlign.center) {
+            int dotsPerChar = 6;
+            int space = maxLength - style.text.length; // 6
+            int spaceKiri = (space / 2).ceil();
+            int dotToSkip = (spaceKiri * (dotsPerChar * 2)) + paddingleft;
+            bytes +=
+                '''BARCODE $dotToSkip, $paddingtop, "128",$heighBarCode,1,0,1,1, "${style.text}""\n''';
+          } else {
+            bytes +=
+                '''BARCODE $paddingleft, $paddingtop, "128",$heighBarCode,1,0,1,1, "${style.text}""\n''';
+          }
+
+          paddingtop += heighBarCode + 50;
+        } else if (style.printLine) {
+          // bytes += '''BAR 0,$paddingtop,400,4\n''';
+          bytes += '''BLINE 4 mm\n''';
+          paddingtop += 20;
+        } else {
+          if (style.fontZoom > 1) {
+            feed = 50;
+            maxLength = maxCharLength ~/ 2; // toInt()
+          }
+          if (style.align == RavAlign.left) {
+            paddingtop = _leftText(
+              maxLength: maxLength,
+              spaceLeft: 0,
+              fontZoom: style.fontZoom,
+              text: style.text,
+              paddingLeft: paddingleft,
+              paddingTop: paddingtop,
+              feed: feed,
+            );
+          } else if (style.align == RavAlign.center) {
+            paddingtop = _textCenter(
+              maxLength: maxLength,
+              fontZoom: style.fontZoom,
+              text: style.text,
+              paddingLeft: paddingleft,
+              paddingTop: paddingtop,
+              feed: feed,
+              widthLabel: widthLabel,
+            );
+          } else {
+            paddingtop = _rightText(
+              maxLength: maxLength,
+              spaceLeft: 0,
+              fontZoom: style.fontZoom,
+              text: style.text,
+              paddingLeft: paddingleft,
+              paddingTop: paddingtop,
+              feed: feed,
+            );
+          }
+          paddingtop += feed;
         }
-        if (style.align == 0) {
-          paddingtop = _leftText(
-            maxLength: maxLength,
-            spaceLeft: 0,
-            fontZoom: style.fontZoom,
-            text: style.text,
-            paddingLeft: paddingleft,
-            paddingTop: paddingtop,
-            feed: feed,
-          );
-        } else if (style.align == 1) {
-          paddingtop = _textCenter(
-            maxLength: maxLength,
-            fontZoom: style.fontZoom,
-            text: style.text,
-            paddingLeft: paddingleft,
-            paddingTop: paddingtop,
-            feed: feed,
-            widthLabel: widthLabel,
-          );
-        }
-        paddingtop += feed;
       }
     }
   }
@@ -200,61 +217,83 @@ COUNTRY 061
     for (RavTextStyle style in texts) {
       int feed = lineFeed;
       int maxLength = maxCharLength;
-      if (style.isQrCode) {
-        // if (style.align == 1) {
-        //   bytes += '''QRCODE 180,$paddingtop,H,10,A,0,"${style.text}"\n''';
-        // } else {
-        //   bytes +=
-        //       '''QRCODE $paddingleft,$paddingtop,H,10,A,0,"${style.text}"\n''';
-        // }
-        bytes +=
-            '''QRCODE $paddingleft,$paddingtop,H,5,A,0,"${style.text}"\n''';
-        paddingtop += 225;
-      } else if (style.isBarCode) {
-        int heighBarCode = 100;
-        if (style.align == 1) {
-          int dotsPerChar = 6;
-          int space = maxCharLength - style.text.length; // 6
-          int spaceKiri = (space / 2).ceil();
-          int dotToSkip = (spaceKiri * (dotsPerChar * 2)) + paddingleft;
-          bytes +=
-              '''BARCODE $dotToSkip, $paddingtop, "128",$heighBarCode,1,0,1,1, "${style.text}""\n''';
-        } else {
-          bytes +=
-              '''BARCODE $paddingleft, $paddingtop, "128",$heighBarCode,1,0,1,1, "${style.text}""\n''';
+      if (style.lineEnter != null) {
+        for (int i = 0; i < style.lineEnter!; i++) {
+          bytes += '''TEXT 0, $paddingtop, "1", 0, 1, 1, ""\n''';
+          paddingtop += feed;
         }
-
-        paddingtop += heighBarCode + 50;
-      } else if (style.printLine) {
-        bytes += '''BAR 0,$paddingtop,800,4\n''';
-        paddingtop += 20;
       } else {
-        if (style.fontZoom > 1) {
-          feed = 50;
-          maxLength = maxCharLength ~/ 2; // toInt()
+        if (style.isQrCode) {
+          // if (style.align == 1) {
+          //   bytes += '''QRCODE 180,$paddingtop,H,10,A,0,"${style.text}"\n''';
+          // } else {
+          //   bytes +=
+          //       '''QRCODE $paddingleft,$paddingtop,H,10,A,0,"${style.text}"\n''';
+          // }
+          bytes += '''QRCODE 0,$paddingtop,H,5,A,0,"${style.text}"\n''';
+          paddingtop += 225;
+        } else if (style.isBarCode) {
+          int heighBarCode = 100;
+          if (style.align == RavAlign.center) {
+            int dotsPerChar = 6;
+            int space = maxCharLength - style.text.length; // 6
+            int spaceKiri = (space / 2).ceil();
+            int dotToSkip = (spaceKiri * (dotsPerChar * 2));
+            bytes +=
+                '''BARCODE $dotToSkip, $paddingtop, "128",$heighBarCode,1,0,1,1, "${style.text}""\n''';
+          } else if (style.align == RavAlign.right) {
+            int dotsPerChar = 6;
+            int spaceKiri = maxCharLength - style.text.length;
+            int dotToSkip = (spaceKiri * (dotsPerChar * 2));
+            bytes +=
+                '''BARCODE $dotToSkip, $paddingtop, "128",$heighBarCode,1,0,1,1, "${style.text}""\n''';
+          } else {
+            bytes +=
+                '''BARCODE 0, $paddingtop, "128",$heighBarCode,1,0,1,1, "${style.text}""\n''';
+          }
+
+          paddingtop += heighBarCode + 50;
+        } else if (style.printLine) {
+          bytes += '''BAR 0,$paddingtop,800,4\n''';
+          paddingtop += 20;
+        } else {
+          if (style.fontZoom > 1) {
+            feed = 50;
+            maxLength = maxCharLength ~/ 2; // toInt()
+          }
+          if (style.align == RavAlign.left) {
+            paddingtop = _leftText(
+              maxLength: maxLength,
+              spaceLeft: 0,
+              fontZoom: style.fontZoom,
+              text: style.text,
+              paddingLeft: 0,
+              paddingTop: paddingtop,
+              feed: feed,
+            );
+          } else if (style.align == RavAlign.center) {
+            paddingtop = _textCenter(
+              maxLength: maxLength,
+              fontZoom: style.fontZoom,
+              text: style.text,
+              paddingLeft: 0,
+              paddingTop: paddingtop,
+              feed: feed,
+              widthLabel: widthLabel,
+            );
+          } else {
+            paddingtop = _rightText(
+              maxLength: maxLength,
+              spaceLeft: 0,
+              fontZoom: style.fontZoom,
+              text: style.text,
+              paddingLeft: 0,
+              paddingTop: paddingtop,
+              feed: feed,
+            );
+          }
+          paddingtop += feed;
         }
-        if (style.align == 0) {
-          paddingtop = _leftText(
-            maxLength: maxLength,
-            spaceLeft: 0,
-            fontZoom: style.fontZoom,
-            text: style.text,
-            paddingLeft: paddingleft,
-            paddingTop: paddingtop,
-            feed: feed,
-          );
-        } else if (style.align == 1) {
-          paddingtop = _textCenter(
-            maxLength: maxLength,
-            fontZoom: style.fontZoom,
-            text: style.text,
-            paddingLeft: paddingleft,
-            paddingTop: paddingtop,
-            feed: feed,
-            widthLabel: widthLabel,
-          );
-        }
-        paddingtop += feed;
       }
     }
   }
@@ -309,6 +348,68 @@ COUNTRY 061
       for (int i = 0; i < resultLines.length; i++) {
         bytes +=
             '''TEXT $paddingLeft, $paddingTop, "1", 0, $charZoom, $charZoom, "$space${resultLines[i]}"\n''';
+        paddingTop += feed;
+      }
+      return paddingTop;
+    }
+  }
+
+  int _rightText(
+      {required int maxLength,
+      required int spaceLeft,
+      required int fontZoom,
+      required String text,
+      required int paddingLeft,
+      required int paddingTop,
+      required int feed}) {
+    int maxChar = maxLength - spaceLeft;
+    int charZoom;
+    if (fontZoom <= 1) {
+      charZoom = 1;
+    } else {
+      charZoom = 2;
+    }
+
+    String space = "";
+    for (int i = 0; i < spaceLeft; i++) {
+      space += " ";
+    }
+    if (text.length < maxChar) {
+      int dotsPerChar = 6;
+      int spaceKiri = maxChar - text.length;
+      int dotToSkip = (spaceKiri * (dotsPerChar * 2));
+      bytes +=
+          '''TEXT $dotToSkip, $paddingTop, "1", 0, $charZoom, $charZoom, "$text"\n''';
+      return paddingTop;
+    } else {
+      List<String> splitSpace = text.split(" ");
+      List<String> resultLines = [];
+      String currentLine = "";
+
+      for (String teks in splitSpace) {
+        if (currentLine.isEmpty) {
+          currentLine = teks;
+        } else {
+          String tempLine = '$currentLine $teks';
+          if (tempLine.length <= maxChar) {
+            currentLine = tempLine;
+          } else {
+            resultLines.add(currentLine);
+            currentLine = teks;
+          }
+        }
+      }
+
+      if (currentLine.isNotEmpty) {
+        resultLines.add(currentLine);
+      }
+
+      for (int i = 0; i < resultLines.length; i++) {
+        int dotsPerChar = 6;
+        int spaceKiri = maxChar - resultLines[i].length;
+        int dotToSkip = (spaceKiri * (dotsPerChar * 2));
+        bytes +=
+            '''TEXT $dotToSkip, $paddingTop, "1", 0, $charZoom, $charZoom, "$space${resultLines[i]}"\n''';
         paddingTop += feed;
       }
       return paddingTop;
@@ -397,7 +498,11 @@ COUNTRY 061
     for (RavTextStyle style in texts) {
       if (style.isQrCode) {
         bytesPos += gen.qrcode(style.text,
-            align: style.align == 0 ? PosAlign.left : PosAlign.center,
+            align: style.align == RavAlign.left
+                ? PosAlign.left
+                : style.align == RavAlign.right
+                    ? PosAlign.right
+                    : PosAlign.center,
             cor: QRCorrection.H);
       } else if (style.isBarCode) {
         String result = "{B"; // TYPE BARCODE A,B,C
@@ -406,7 +511,11 @@ COUNTRY 061
         bytesPos += gen.barcode(Barcode.code128(barcodeData));
       } else {
         PosStyles stylePos = PosStyles(
-          align: style.align == 0 ? PosAlign.left : PosAlign.center,
+          align: style.align == RavAlign.left
+              ? PosAlign.left
+              : style.align == RavAlign.right
+                  ? PosAlign.right
+                  : PosAlign.center,
           height: style.fontZoom == 1 ? PosTextSize.size1 : PosTextSize.size2,
           width: style.fontZoom == 1 ? PosTextSize.size1 : PosTextSize.size2,
         );
@@ -452,10 +561,11 @@ COUNTRY 061
 class RavTextStyle {
   int fontZoom;
   String text;
-  int align;
+  RavAlign align;
   bool isQrCode;
   bool isBarCode;
   bool printLine;
+  int? lineEnter;
 
   /// Jika fontzoom lebih besar daripada 1, maka itu ukuran text 2x lebih besar, default 1
   ///
@@ -463,12 +573,17 @@ class RavTextStyle {
   /// printLine = false, true jika ingin membuat garus putus2, dan text dikosongkan saja
   RavTextStyle({
     this.fontZoom = 1,
-    this.align = 0,
+    this.align = RavAlign.left,
     this.isQrCode = false,
     this.isBarCode = false,
     this.printLine = false,
+    this.lineEnter,
     required this.text,
   });
 }
 
-class RavPos {}
+enum RavAlign {
+  left,
+  center,
+  right,
+}
