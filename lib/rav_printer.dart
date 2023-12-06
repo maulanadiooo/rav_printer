@@ -376,6 +376,9 @@ COUNTRY 061
     }
     if (text.length < maxChar) {
       int dotsPerChar = 6;
+      if (fontZoom > 1) {
+        dotsPerChar = 12;
+      }
       int spaceKiri = maxChar - text.length;
       int dotToSkip = (spaceKiri * (dotsPerChar * 2));
       bytes +=
