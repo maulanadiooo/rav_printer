@@ -167,10 +167,26 @@ COUNTRY 061
           bytes += '''BLINE 4 mm\n''';
           paddingtop += 20;
         } else {
-          if (style.fontZoom > 1) {
-            feed = 50;
-            maxLength = maxCharLength ~/ 2; // toInt()
+          if (style.fontHeight != null) {
+            if (style.fontHeight! > 1) {
+              feed = 50;
+            }
+          } else {
+            if (style.fontZoom > 1) {
+              feed = 50;
+            }
           }
+
+          if (style.fontWidth != null) {
+            if (style.fontWidth! > 1) {
+              maxLength = maxCharLength ~/ 2; // toInt()
+            }
+          } else {
+            if (style.fontZoom > 1) {
+              maxLength = maxCharLength ~/ 2; // toInt()
+            }
+          }
+
           if (style.align == RavAlign.left) {
             paddingtop = _leftText(
               maxLength: maxLength,
@@ -263,10 +279,26 @@ COUNTRY 061
           bytes += '''BAR 0,$paddingtop,800,4\n''';
           paddingtop += 20;
         } else {
-          if (style.fontZoom > 1) {
-            feed = 50;
-            maxLength = maxCharLength ~/ 2; // toInt()
+          if (style.fontHeight != null) {
+            if (style.fontHeight! > 1) {
+              feed = 50;
+            }
+          } else {
+            if (style.fontZoom > 1) {
+              feed = 50;
+            }
           }
+
+          if (style.fontWidth != null) {
+            if (style.fontWidth! > 1) {
+              maxLength = maxCharLength ~/ 2; // toInt()
+            }
+          } else {
+            if (style.fontZoom > 1) {
+              maxLength = maxCharLength ~/ 2; // toInt()
+            }
+          }
+
           if (style.align == RavAlign.left) {
             paddingtop = _leftText(
               maxLength: maxLength,
@@ -310,14 +342,17 @@ COUNTRY 061
     }
   }
 
-  int _leftText(
-      {required int maxLength,
-      required int spaceLeft,
-      required int fontZoom,
-      required String text,
-      required int paddingLeft,
-      required int paddingTop,
-      required int feed, int? fontHeight, int? fontWidth,}) {
+  int _leftText({
+    required int maxLength,
+    required int spaceLeft,
+    required int fontZoom,
+    required String text,
+    required int paddingLeft,
+    required int paddingTop,
+    required int feed,
+    int? fontHeight,
+    int? fontWidth,
+  }) {
     int maxChar = maxLength - spaceLeft;
     int charZoom;
     if (fontZoom <= 1) {
@@ -366,14 +401,17 @@ COUNTRY 061
     }
   }
 
-  int _rightText(
-      {required int maxLength,
-      required int spaceLeft,
-      required int fontZoom,
-      required String text,
-      required int paddingLeft,
-      required int paddingTop,
-      required int feed, int? fontHeight, int? fontWidth,}) {
+  int _rightText({
+    required int maxLength,
+    required int spaceLeft,
+    required int fontZoom,
+    required String text,
+    required int paddingLeft,
+    required int paddingTop,
+    required int feed,
+    int? fontHeight,
+    int? fontWidth,
+  }) {
     int maxChar = maxLength - spaceLeft;
     int charZoom;
     if (fontZoom <= 1) {
@@ -434,14 +472,17 @@ COUNTRY 061
     }
   }
 
-  int _textCenter(
-      {required int maxLength,
-      required int fontZoom,
-      required String text,
-      required int paddingLeft,
-      required int paddingTop,
-      required int feed,
-      required LabelWidth widthLabel, int? fontHeight, int? fontWidth,}) {
+  int _textCenter({
+    required int maxLength,
+    required int fontZoom,
+    required String text,
+    required int paddingLeft,
+    required int paddingTop,
+    required int feed,
+    required LabelWidth widthLabel,
+    int? fontHeight,
+    int? fontWidth,
+  }) {
     int maxChar = maxLength;
 
     if (text.length < maxChar) {
