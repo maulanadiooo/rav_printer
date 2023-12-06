@@ -1,5 +1,5 @@
-import 'package:bluetooth_thermal_printer/bluetooth_thermal_printer.dart';
-import 'package:esc_pos_utils_plus/esc_pos_utils.dart';
+import 'package:bluetooth_thermal_printer_plus/bluetooth_thermal_printer_plus.dart';
+import 'package:esc_pos_utils_plus/esc_pos_utils_plus.dart';
 
 enum LabelWidth {
   mm40,
@@ -38,9 +38,9 @@ class RavPrinter {
   }
 
   // disconnect to any connected device                        --> new feature
-  Future<String?> disconnect() async {
-    return BluetoothThermalPrinter.disconnect();
-  }
+  // Future<String?> disconnect() async {
+  //   return BluetoothThermalPrinter.disconnect();
+  // }
 
   ///Printes the [bytes] using bluetooth printer.
   Future<bool> doPrintLabel({required List<RavTextStyle> texts}) async {
@@ -48,7 +48,6 @@ class RavPrinter {
     generateByte(texts: texts);
     bytes += '''PRINT 1
 ''';
-    print("BYTENYA $bytes");
     String? result = await BluetoothThermalPrinter.writeBytes(bytes.codeUnits);
     clearBytes();
     if (result == "true") {
@@ -57,11 +56,12 @@ class RavPrinter {
     return false;
   }
 
+  /// hanya allow mm58 dan 80 papersize
   Future<bool> doPrintReceipt(
       {required List<RavTextStyle> texts, required PaperSize paperSize}) async {
     profile ??= await CapabilityProfile.load();
     if (profile != null) {
-      Generator gen = Generator(PaperSize.mm58, profile!);
+      Generator gen = Generator(paperSize, profile!);
       await doFor58mmPos(texts: texts, gen: gen);
       String? result = await BluetoothThermalPrinter.writeBytes(bytesPos);
       clearBytes();
@@ -329,7 +329,7 @@ COUNTRY 061
       // hitung spacenya
       int space = maxChar - text.length; // 6
       int spaceKiri = (space / 2).ceil(); // 3
-      int spaceKanan = (space / 2).floor(); // 3
+      // int spaceKanan = (space / 2).floor(); // 3
       String finalText = text;
       // hitung berdasarkan dots, 1 karkter itu 1mm = 8dots, jika fontzoom 2 maka 1 karakter 2mm = 24dots
       int dotsPerChar = 6;
