@@ -367,7 +367,7 @@ COUNTRY 061
     }
     if (text.length < maxChar) {
       bytes +=
-          '''TEXT $paddingLeft, $paddingTop, "1", 0, ${fontHeight ?? charZoom}, ${fontWidth ?? charZoom}, "$text"\n''';
+          '''TEXT $paddingLeft, $paddingTop, "1", 0, ${fontWidth ?? charZoom}, ${fontHeight ?? charZoom}, "$text"\n''';
       return paddingTop;
     } else {
       List<String> splitSpace = text.split(" ");
@@ -394,7 +394,7 @@ COUNTRY 061
 
       for (int i = 0; i < resultLines.length; i++) {
         bytes +=
-            '''TEXT $paddingLeft, $paddingTop, "1", 0, ${fontHeight ?? charZoom}, ${fontWidth ?? charZoom}, "$space${resultLines[i]}"\n''';
+            '''TEXT $paddingLeft, $paddingTop, "1", 0, ${fontWidth ?? charZoom}, ${fontHeight ?? charZoom}, "$space${resultLines[i]}"\n''';
         paddingTop += feed;
       }
       return paddingTop;
@@ -432,7 +432,7 @@ COUNTRY 061
       int spaceKiri = maxChar - text.length;
       int dotToSkip = (spaceKiri * (dotsPerChar * 2));
       bytes +=
-          '''TEXT $dotToSkip, $paddingTop, "1", 0, ${fontHeight ?? charZoom}, ${fontWidth ?? charZoom}, "$text"\n''';
+          '''TEXT $dotToSkip, $paddingTop, "1", 0, ${fontWidth ?? charZoom}, ${fontHeight ?? charZoom}, "$text"\n''';
       return paddingTop;
     } else {
       List<String> splitSpace = text.split(" ");
@@ -465,7 +465,7 @@ COUNTRY 061
         int spaceKiri = maxChar - resultLines[i].length;
         int dotToSkip = (spaceKiri * (dotsPerChar * 2));
         bytes +=
-            '''TEXT $dotToSkip, $paddingTop, "1", 0,  ${fontHeight ?? charZoom}, ${fontWidth ?? charZoom}, "$space${resultLines[i]}"\n''';
+            '''TEXT $dotToSkip, $paddingTop, "1", 0,  ${fontWidth ?? charZoom}, ${fontHeight ?? charZoom}, "$space${resultLines[i]}"\n''';
         paddingTop += feed;
       }
       return paddingTop;
@@ -509,7 +509,7 @@ COUNTRY 061
       //   finalText += " ";
       // }
       bytes +=
-          '''TEXT $dotToSkip, $paddingTop, "1", 0, ${fontHeight ?? fontZoom}, ${fontWidth ?? fontZoom}, "$finalText"\n''';
+          '''TEXT $dotToSkip, $paddingTop, "1", 0, ${fontWidth ?? fontZoom}, ${fontHeight ?? fontZoom}, "$finalText"\n''';
       return paddingTop;
     } else {
       // cari hasil baginya dulu berapa
@@ -524,7 +524,7 @@ COUNTRY 061
         int awalKarakter = maxChar * i;
         String singleLineText = text.substring(awalKarakter, akhirKarakter);
         bytes +=
-            '''TEXT $paddingLeft, $paddingTop, "1", 0, ${fontHeight ?? fontZoom}, ${fontWidth ?? fontZoom}, "$singleLineText"\n''';
+            '''TEXT $paddingLeft, $paddingTop, "1", 0, ${fontWidth ?? fontZoom}, ${fontHeight ?? fontZoom}, "$singleLineText"\n''';
         paddingTop += feed;
       }
       // nah ambil sisa karakternya, ini baru yang di center kan
@@ -542,7 +542,7 @@ COUNTRY 061
           finalText += " ";
         }
         bytes +=
-            '''TEXT $paddingLeft, $paddingTop, "1", 0, ${fontHeight ?? fontZoom}, ${fontWidth ?? fontZoom}, "$finalText"\n''';
+            '''TEXT $paddingLeft, $paddingTop, "1", 0, ${fontWidth ?? fontZoom}, ${fontHeight ?? fontZoom}, "$finalText"\n''';
         paddingTop += feed;
       }
 
