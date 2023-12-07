@@ -1,3 +1,11 @@
+## [0.0.6]
+
+- fixed align bug
+
+## [0.0.5]
+
+- add example
+
 ## [0.0.4]
 
 - align right enable for label

@@ -1,6 +1,6 @@
 name: rav_printer
 description: Ravintola for Printer TSPL commands.
-version: 0.0.4
+version: 0.0.6
 homepage: https://github.com/maulanadiooo/rav_printer
 
 environment:
